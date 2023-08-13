@@ -2,7 +2,7 @@
 
 Deploy =>
 
-Arquitetura do banco => [bd.svg]
+Arquitetura do banco => (bd.svg)
 
 
 Link Front =>
