@@ -7,7 +7,7 @@ import dogSchema from "../schemas/dog.schema.js"
 
 const myDogsRouter = Router()
 
-myDogsRouter.get("/me/:id", validateToken, getMyDogs)
+myDogsRouter.get("/me/", validateToken, getMyDogs)
 myDogsRouter.post("/me/newdog", validateToken, validateSchema(dogSchema), createDog)
 myDogsRouter.put("/me/:id", validateToken, changeStatusById)
 myDogsRouter.delete("/me/:id", validateToken, deleteDog )
