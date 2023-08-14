@@ -26,7 +26,7 @@ export async function signIn(req, res) {
         const userID = user.rows[0].id    
             
         await loginSucess(userID, token)
-        res.status(200).send({ token })
+        res.status(200).send({ token, userID })
 
     } catch (err) {
         res.status(500).send(err.message)

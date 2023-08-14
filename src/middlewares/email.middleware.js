@@ -6,7 +6,7 @@ export async function validateNewEmail(req, res, next) {
     const { email } = req.body;
     try {
         const user = await queryEmail(email)
-        if (user.rowCount === 1) return res.status(477).send("Email já cadastrado");
+        if (user.rowCount === 1) return res.status(400).send("Email já cadastrado");
         next();
     } catch (err) {
         res.status(500).send(err.message);
@@ -17,10 +17,10 @@ export async function validateNewCpf(req, res, next) {
     const { cpf } = req.body;
     try {
         const user = await queryCpf(cpf)
-        if (user.rowCount === 1) return res.status(477).send("CPF já cadastrado");
+        if (user.rowCount === 1) return res.status(400).send("CPF já cadastrado");
         next();
     } catch (err) {
-        res.status(477).send(err.message);
+        res.status(500).send(err.message);
     }
 }
 

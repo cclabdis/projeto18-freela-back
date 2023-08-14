@@ -3,7 +3,9 @@ import { acessDog, changeStatus, checkDog, deleteDogId, getAllDogs, insertDog, m
 export async function getDogs(req, res) {
     try {
         const dogs = await getAllDogs()
-        res.send(dogs.rows)
+        const activeDogs = dogs.rows.filter(dog => dog.active === 'ativo');
+        res.send(activeDogs);
+
     } catch (error) {
         res.status(500).send(error.message)
     }
@@ -31,15 +33,15 @@ export async function getMyDogs(req, res) {
 }
 
 export async function createDog(req, res) {
-    const { name, photo_url, characteristics, contact_info, active, hourly_rate} = req.body
-    
-    try{
-          const { user } = res.locals
-          const userID = user.id
-          await insertDog(name, photo_url, characteristics, contact_info, active, userID, hourly_rate)
-          res.sendStatus(201)
+    const { name, photo_url, characteristics, contact_info, active, hourly_rate } = req.body
 
-    }catch(err) {
+    try {
+        const { user } = res.locals
+        const userID = user.id
+        await insertDog(name, photo_url, characteristics, contact_info, active, userID, hourly_rate)
+        res.sendStatus(201)
+
+    } catch (err) {
         res.status(499).send(err.message)
     }
 }
@@ -60,7 +62,7 @@ export async function deleteDog(req, res) {
     }
 }
 
-export async function changeStatusById(req, res){
+export async function changeStatusById(req, res) {
     const { id } = req.params
     const { user } = res.locals
     const { active } = req.body
