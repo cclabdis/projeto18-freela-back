@@ -1,4 +1,4 @@
-import { acessDog, changeStatus, checkDog, deleteDogId, getAllDogs, insertDog, mydogs, weinieRepositories } from "../repositories/doguis.repositories.js";
+import { weinieRepositories } from "../repositories/doguis.repositories.js";
 
 async function getAll(req, res) {
     try {

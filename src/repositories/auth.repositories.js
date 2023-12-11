@@ -22,6 +22,4 @@ async function loginSucess(userID, token) {
 `, [userID, token])
 }
 
-
-
 export const authRepositories = {users, acessCpf, acessEmail, loginSucess}
