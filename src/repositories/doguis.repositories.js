@@ -1,48 +1,52 @@
 import { db } from "../database/database.connection.js"
 
-export async function getAllDogs(email){ 
+async function getAllDogs(email) {
     return db.query(`SELECT * FROM doguitos;`)
 }
 
-export async function insertDog(name, photo_url, characteristics, contact_info, active, userID, hourly_rate){
+async function create(name, photo_url, characteristics, contact_info, active, userID, hourly_rate) {
     return db.query(`INSERT INTO doguitos (name, photo_url, characteristics, contact_info, active, owner_id, hourly_rate) 
         VALUES ($1, $2, $3, $4, $5, $6, $7)` ,
-    [name, photo_url, characteristics, contact_info, active, userID, hourly_rate]);
+        [name, photo_url, characteristics, contact_info, active, userID, hourly_rate]);
 }
 
-export async function acessToken(token){ 
+async function acessToken(token) {
     return db.query(`SELECT * from tokens WHERE token = $1`,
-    [token]);
+        [token]);
 }
-export async function acessUser(usuario){ 
+
+async function acessUser(user_id) {
     return db.query(`SELECT * FROM users WHERE id=$1`,
-    [usuario]);
+        [user_id]);
 }
 
-export async function acessDog(id){
-    return db.query(`SELECT * FROM doguitos WHERE id=$1`, 
-    [id]);
+async function acessByID(id) {
+    return db.query(`SELECT * FROM doguitos WHERE id=$1`,
+        [id]);
 }
 
-export async function mydogs(userID){
-    return db.query(`SELECT * FROM doguitos WHERE owner_id=$1;`, 
-    [userID])
+async function getMyIDs(userID) {
+    return db.query(`SELECT * FROM doguitos WHERE owner_id=$1;`,
+        [userID])
 }
 
-export async function deleteDogId(id){
+async function deleteById(id) {
     return db.query(`
     DELETE FROM doguitos WHERE id = $1;
       `, [id]);
 }
 
-export async function checkDog(id){
+async function checkById(id) {
     return db.query(`
     SELECT * FROM doguitos WHERE id = $1
       `, [id]);
 }
-export async function changeStatus(active, id){
+
+async function changeStatus(active, id) {
     return db.query(`
     UPDATE doguitos
     SET active = $1
     WHERE id = $2` , [active, id]);
 }
+
+export const weinieRepositories = { changeStatus, deleteById, checkById, getMyIDs, getAllDogs, acessByID, create, acessUser, acessToken }

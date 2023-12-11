@@ -1,8 +1,8 @@
-import { acessDog, changeStatus, checkDog, deleteDogId, getAllDogs, insertDog, mydogs } from "../repositories/doguis.repositories.js";
+import { acessDog, changeStatus, checkDog, deleteDogId, getAllDogs, insertDog, mydogs, weinieRepositories } from "../repositories/doguis.repositories.js";
 
-export async function getAll(req, res) {
+async function getAll(req, res) {
     try {
-        const dogs = await getAllDogs()
+        const dogs = await weinieRepositories.getAllDogs()
         const activeDogs = dogs.rows.filter(dog => dog.active === 'ativo');
         res.send(activeDogs);
 
@@ -10,10 +10,11 @@ export async function getAll(req, res) {
         res.status(500).send(error.message)
     }
 }
-export async function getById(req, res) {
+
+async function getById(req, res) {
     const { id } = req.params
     try {
-        const dog = await acessDog(id)
+        const dog = await weinieRepositories.acessByID(id)
         if (dog.rowCount === 0) return res.sendStatus(404)
         res.send(dog)
     } catch (error) {
@@ -21,24 +22,24 @@ export async function getById(req, res) {
     }
 }
 
-export async function myIDs(req, res) {
+async function myIDs(req, res) {
     const { user } = res.locals
     try {
         const userID = user.id
-        const dog = await mydogs(userID)
+        const dog = await weinieRepositories.getMyIDs(userID)
         res.send(dog)
     } catch (error) {
         res.status(500).send(error.message)
     }
 }
 
-export async function create(req, res) {
+async function create(req, res) {
     const { name, photo_url, characteristics, contact_info, active, hourly_rate } = req.body
 
     try {
         const { user } = res.locals
         const userID = user.id
-        await insertDog(name, photo_url, characteristics, contact_info, active, userID, hourly_rate)
+        await weinieRepositories.create(name, photo_url, characteristics, contact_info, active, userID, hourly_rate)
         res.sendStatus(201)
 
     } catch (err) {
@@ -46,15 +47,15 @@ export async function create(req, res) {
     }
 }
 
-export async function deleteById(req, res) {
+async function deleteById(req, res) {
     const { id } = req.params
     const { user } = res.locals
 
     try {
-        const check = await checkDog(id)
+        const check = await weinieRepositories.checkById(id)
         if (check.rowCount === 0) return res.sendStatus(404)
 
-        await deleteDogId(id)
+        await weinieRepositories.deleteById(id)
         res.status(204).send("Excluido com sucesso")
 
     } catch (err) {
@@ -62,15 +63,15 @@ export async function deleteById(req, res) {
     }
 }
 
-export async function changeStatusById(req, res) {
+async function changeStatusById(req, res) {
     const { id } = req.params
     const { user } = res.locals
     const { active } = req.body
     try {
-        const check = await checkDog(id)
+        const check = await weinieRepositories.checkById(id)
         if (check.rowCount === 0) return res.sendStatus(401)
 
-        await changeStatus(active, id)
+        await weinieRepositories.changeStatus(active, id)
         res.status(204).send("Status alterado")
 
     } catch (err) {
@@ -79,4 +80,4 @@ export async function changeStatusById(req, res) {
 }
 
 
-export const  weinieController = {getAll, getById, myIDs, create, changeStatusById, deleteById}
+export const weinieController = { getAll, getById, myIDs, create, changeStatusById, deleteById }
