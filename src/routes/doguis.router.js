@@ -1,9 +1,9 @@
 import { Router } from "express"
-import {  getDogs, getDogsById } from "../controllers/doguis.controllers.js"
+import { weinieController } from "../controllers/doguis.controllers.js"
 
 const dogRouter = Router()
 
-dogRouter.get("/dog", getDogs)
-dogRouter.get("/dog/:id", getDogsById)
+dogRouter.get("/dog", weinieController.getAll)
+dogRouter.get("/dog/:id", weinieController.getById)
 
 export default dogRouter

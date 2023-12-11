@@ -1,6 +1,6 @@
 import { acessDog, changeStatus, checkDog, deleteDogId, getAllDogs, insertDog, mydogs } from "../repositories/doguis.repositories.js";
 
-export async function getDogs(req, res) {
+export async function getAll(req, res) {
     try {
         const dogs = await getAllDogs()
         const activeDogs = dogs.rows.filter(dog => dog.active === 'ativo');
@@ -10,7 +10,7 @@ export async function getDogs(req, res) {
         res.status(500).send(error.message)
     }
 }
-export async function getDogsById(req, res) {
+export async function getById(req, res) {
     const { id } = req.params
     try {
         const dog = await acessDog(id)
@@ -21,7 +21,7 @@ export async function getDogsById(req, res) {
     }
 }
 
-export async function getMyDogs(req, res) {
+export async function myIDs(req, res) {
     const { user } = res.locals
     try {
         const userID = user.id
@@ -32,7 +32,7 @@ export async function getMyDogs(req, res) {
     }
 }
 
-export async function createDog(req, res) {
+export async function create(req, res) {
     const { name, photo_url, characteristics, contact_info, active, hourly_rate } = req.body
 
     try {
@@ -46,7 +46,7 @@ export async function createDog(req, res) {
     }
 }
 
-export async function deleteDog(req, res) {
+export async function deleteById(req, res) {
     const { id } = req.params
     const { user } = res.locals
 
@@ -77,3 +77,6 @@ export async function changeStatusById(req, res) {
         res.status(500).send(err.message);
     }
 }
+
+
+export const  weinieController = {getAll, getById, myIDs, create, changeStatusById, deleteById}
